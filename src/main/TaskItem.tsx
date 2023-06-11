@@ -4,6 +4,7 @@ import { Data } from "./Data"
 interface Props {
   data: Data
   handleEdit: () => void
+  handleRemove: () => void
 }
 
 export default function TaskItem(props: Props) {
@@ -13,15 +14,20 @@ export default function TaskItem(props: Props) {
 
   return (
     <div
-      className="flex flex-row my-2 px-2 py-1 hover:bg-slate-400 rounded-3xl transition-colors duration-150 ease-linear"
+      className="flex flex-row my-2 mx-3 py-1 hover:bg-slate-400 rounded-3xl transition-colors duration-150 ease-linear"
       style={{
-        fontSize: "calc(2vh + 5px)",
+        fontSize: "calc(2vh + 3px)",
       }}
       onClick={() => {
         setChecked((e) => (hoverOnEdit ? e : !e))
       }}
     >
-      <input type="checkbox" checked={isChecked} className="mr-2 my-auto" />
+      <input
+        type="checkbox"
+        checked={isChecked}
+        className="mx-3 my-auto scale-125"
+      />
+
       <label
         style={{
           transform: isChecked ? "translateX(5px)" : "translateX(0px)",
@@ -35,10 +41,7 @@ export default function TaskItem(props: Props) {
         {props.data.name}
       </label>
       <div
-        className="justify-self-end my-auto rounded-full hover:bg-teal-300 p-2 editButton"
-        onClick={(e) => {
-          props.handleEdit()
-        }}
+        className="justify-self-end my-auto editButton mr-1 flex flex-row"
         onMouseEnter={() => {
           setHoverOnEdit((_) => true)
         }}
@@ -47,9 +50,20 @@ export default function TaskItem(props: Props) {
         }}
       >
         <img
+          src="https://cdn2.iconfinder.com/data/icons/business-shop-finance-symbols-set-3/91/Business_-_Shop_-_Finance_148-1024.png"
+          alt="delete"
+          className="w-8 rounded-full hover:bg-red-500 transition-all duration-100"
+          onClick={() => {
+            props.handleRemove()
+          }}
+        />
+        <img
           src="https://cdn4.iconfinder.com/data/icons/software-menu-icons/256/SoftwareIcons-68-1024.png"
           alt="aaa"
-          className="w-6 pointer-events-none"
+          className="w-8 rounded-full hover:bg-green-300 p-1 transition-all duration-100"
+          onClick={(e) => {
+            props.handleEdit()
+          }}
         />
       </div>
     </div>

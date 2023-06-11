@@ -112,6 +112,11 @@ export const MainScreen: React.FC = () => {
               border: "none",
               outline: "none",
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleEdit()
+              }
+            }}
           />
 
           <button
@@ -150,6 +155,12 @@ export const MainScreen: React.FC = () => {
                 key={p.key}
                 handleEdit={() => {
                   showEditModal(p)
+                }}
+                handleRemove={() => {
+                  setData((_) => {
+                    const l = data.filter((e) => e !== p)
+                    return l
+                  })
                 }}
               />
             )
