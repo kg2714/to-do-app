@@ -47,9 +47,9 @@ export default function TaskItem(props: Props) {
         }}
       >
         <img
-          src="./images/pencil.svg"
-          alt="editing icon"
-          className="w-4 pointer-events-none"
+          src="https://cdn4.iconfinder.com/data/icons/software-menu-icons/256/SoftwareIcons-68-1024.png"
+          alt="aaa"
+          className="w-6 pointer-events-none"
         />
       </div>
     </div>
