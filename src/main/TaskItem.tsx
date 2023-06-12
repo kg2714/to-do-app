@@ -1,10 +1,14 @@
 import React, { useState } from "react"
-import { Data } from "./Data"
 
 interface Props {
-  data: Data
+  data: {
+    name: string
+    done: boolean
+    key: string
+  }
   handleEdit: () => void
   handleRemove: () => void
+  handleClick: (l: boolean) => void
 }
 
 export default function TaskItem(props: Props) {
@@ -19,7 +23,12 @@ export default function TaskItem(props: Props) {
         fontSize: "calc(2vh + 3px)",
       }}
       onClick={() => {
-        setChecked((e) => (hoverOnEdit ? e : !e))
+        if (!hoverOnEdit) {
+          setChecked((e) => {
+            return !e
+          })
+          props.handleClick(!isChecked)
+        }
       }}
     >
       <input
@@ -40,21 +49,19 @@ export default function TaskItem(props: Props) {
       >
         {props.data.name}
       </label>
-      <div
-        className="justify-self-end my-auto editButton mr-1 flex flex-row"
-        onMouseEnter={() => {
-          setHoverOnEdit((_) => true)
-        }}
-        onMouseLeave={() => {
-          setHoverOnEdit((_) => false)
-        }}
-      >
+      <div className="justify-self-end my-auto editButton mr-1 flex flex-row">
         <img
           src="https://cdn2.iconfinder.com/data/icons/business-shop-finance-symbols-set-3/91/Business_-_Shop_-_Finance_148-1024.png"
           alt="delete"
           className="w-8 rounded-full hover:bg-red-500 transition-all duration-100"
           onClick={() => {
             props.handleRemove()
+          }}
+          onMouseEnter={() => {
+            setHoverOnEdit((_) => true)
+          }}
+          onMouseLeave={() => {
+            setHoverOnEdit((_) => false)
           }}
         />
         <img
@@ -63,6 +70,12 @@ export default function TaskItem(props: Props) {
           className="w-8 rounded-full hover:bg-green-300 p-1 transition-all duration-100"
           onClick={(e) => {
             props.handleEdit()
+          }}
+          onMouseEnter={() => {
+            setHoverOnEdit((_) => true)
+          }}
+          onMouseLeave={() => {
+            setHoverOnEdit((_) => false)
           }}
         />
       </div>

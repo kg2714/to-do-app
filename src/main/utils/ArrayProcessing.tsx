@@ -1,4 +1,4 @@
-import { Data } from "../Data"
+import { Data } from "./DataInterface"
 
 export const getIndexOfData = (i: Array<Data>, s: Data): number => {
   var p = -1

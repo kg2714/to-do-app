@@ -1,23 +1,55 @@
 import React, { useState, useEffect } from "react"
-import TaskList from "./TaskList"
 import "./style/fonts.css"
-import { Data } from "./Data"
 import TaskItem from "./TaskItem"
 import "./style/scrollbar.css"
 import Modal from "./Modal"
 import { getIndexOfData } from "./utils/ArrayProcessing"
+import store from "store2"
+import shortid from "shortid"
+import { Data } from "./utils/DataInterface"
 
-const initData: Data[] = [new Data("asdasd", true)]
+var initData: Data[] = []
 
 export const MainScreen: React.FC = () => {
+  // page content
+  //////////preload for data fetching///////////
+
+  useEffect(() => {
+    const init = Object.keys(store())
+    setData((_) => {
+      var p: Data[] = []
+      init.forEach((e) => {
+        p = [
+          ...p,
+          {
+            name: store.get(e).name,
+            done: store.get(e).done,
+            key: e,
+          },
+        ]
+      })
+      return p
+    })
+  }, [])
+
+  //////////end preload for data fetching///////////
   const [data, setData] = useState(initData)
+
+  useEffect(() => {
+    saveData()
+  })
+
+  const saveData = () => {
+    data.forEach((e) => {
+      store.set(e.key, { name: e.name, done: e.done })
+    })
+  }
 
   const [isShownAddModal, setShownAddModal] = useState(false)
   const [isShownEditModal, setShownEditModal] = useState(false)
 
-  useEffect(() => {
-    console.log(isShownAddModal ? "Modal shown" : "Closed modal")
-  }, [isShownAddModal])
+  // eslint-disable-next-line
+  // useEffect(() => saveData(), [data])
 
   const showModal = () => {
     setShownAddModal((e) => !e)
@@ -29,9 +61,11 @@ export const MainScreen: React.FC = () => {
   //add modal content
 
   const handleAddTask = (taskName: string) => {
-    setData((_) =>
-      taskName !== "" ? [...data, new Data(taskName, false)] : [...data]
-    )
+    setData((_) => {
+      return taskName !== ""
+        ? [...data, { name: taskName, done: false, key: shortid.generate() }]
+        : [...data]
+    })
 
     setShownAddModal((_) => false)
     setTaskName((_) => "")
@@ -58,6 +92,7 @@ export const MainScreen: React.FC = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleAddTask(taskName)
+              saveData()
             }
           }}
         />
@@ -65,6 +100,7 @@ export const MainScreen: React.FC = () => {
           className="self-end mr-2 mt-3 px-4 py-2 bg-white bg-opacity-60 rounded-3xl"
           onClick={() => {
             handleAddTask(taskName)
+            saveData()
           }}
         >
           Add new task
@@ -73,7 +109,11 @@ export const MainScreen: React.FC = () => {
     )
   }
 
-  const [editingData, setEditingData] = useState(new Data("", true))
+  const [editingData, setEditingData] = useState({
+    name: "",
+    done: false,
+    key: "",
+  })
   const [editingTaskName, setEditingTaskName] = useState("")
 
   // edit modal content
@@ -85,14 +125,15 @@ export const MainScreen: React.FC = () => {
 
   function handleEdit() {
     var edit = data
-    edit[getIndexOfData(edit, editingData)] = new Data(
-      editingTaskName,
-      editingData.done
-    )
+
+    edit[getIndexOfData(edit, editingData)].name = editingTaskName
+    edit[getIndexOfData(edit, editingData)].done = editingData.done
+
     setData((_) => edit)
 
     setShownEditModal((_) => false)
     setEditingTaskName((_) => "")
+    saveData()
   }
 
   const EditModalContent = () => {
@@ -132,6 +173,11 @@ export const MainScreen: React.FC = () => {
     )
   }
 
+  window.addEventListener("beforeunload", () => {
+    store(false)
+    saveData()
+  })
+
   return (
     <div className="flex w-screen h-screen justify-center items-center">
       <div className="flex flex-col sm:w-[70vw] sm:h-[90vh] w-screen h-screen rounded-lg bg-slate-300">
@@ -146,8 +192,7 @@ export const MainScreen: React.FC = () => {
             Todo List
           </p>
         </div>
-
-        <TaskList>
+        <div className="mx-3 h-full overflow-y-auto">
           {data.map((p) => {
             return (
               <TaskItem
@@ -159,13 +204,23 @@ export const MainScreen: React.FC = () => {
                 handleRemove={() => {
                   setData((_) => {
                     const l = data.filter((e) => e !== p)
+                    store.remove(p.key)
                     return l
                   })
+                }}
+                handleClick={(l) => {
+                  var edit = data
+                  edit[getIndexOfData(data, p)].done =
+                    !edit[getIndexOfData(data, p)].done
+
+                  setData((_) => data)
+
+                  saveData()
                 }}
               />
             )
           })}
-        </TaskList>
+        </div>
         <button
           onClick={showModal}
           className="self-end bg-blue-700 rounded-[4em] py-3 px-4 m-3"
