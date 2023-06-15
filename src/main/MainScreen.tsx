@@ -41,7 +41,8 @@ export const MainScreen: React.FC = () => {
 
   const saveData = () => {
     data.forEach((e) => {
-      store.set(e.key, { name: e.name, done: e.done })
+      if (e.name !== "") store.set(e.key, { name: e.name, done: e.done })
+      else store.remove(e.key)
     })
   }
 
@@ -126,9 +127,12 @@ export const MainScreen: React.FC = () => {
   function handleEdit() {
     var edit = data
 
-    edit[getIndexOfData(edit, editingData)].name = editingTaskName
-    edit[getIndexOfData(edit, editingData)].done = editingData.done
-
+    if (edit[getIndexOfData(edit, editingData)].name !== "") {
+      edit[getIndexOfData(edit, editingData)].name = editingTaskName
+      edit[getIndexOfData(edit, editingData)].done = editingData.done
+    } else {
+      edit = edit.filter((e) => e !== edit[getIndexOfData(edit, editingData)])
+    }
     setData((_) => edit)
 
     setShownEditModal((_) => false)
@@ -173,63 +177,73 @@ export const MainScreen: React.FC = () => {
     )
   }
 
+  const handleRemove = (p: Data) => {
+    const l = data.filter((e) => e !== p)
+    store.remove(p.key)
+    return l
+  }
+
   window.addEventListener("beforeunload", () => {
     store(false)
     saveData()
   })
 
   return (
-    <div className="flex w-screen h-screen justify-center items-center">
-      <div className="flex flex-col sm:w-[70vw] sm:h-[90vh] w-screen h-screen rounded-lg bg-slate-300">
-        <div className="self-start m-3">
-          <p
-            style={{
-              fontFamily: "Inter",
-              fontWeight: 700,
-              fontSize: "calc(3vh + 16px)",
-            }}
+    <>
+      <div className="absolute top-0 left-0 w-screen h-screen overflow-hidden"></div>
+      <div className="flex w-screen h-screen justify-center items-center ">
+        <div className="flex flex-col sm:w-[70vw] sm:h-[90vh] w-screen h-screen rounded-lg bg-slate-300 bg-opacity-50 backdrop-blur-lg">
+          <div className="self-start w-full">
+            <div className="flex flex-row justify-between m-4">
+              <p
+                style={{
+                  fontFamily: "Inter",
+                  fontWeight: 700,
+                  fontSize: "calc(3vh + 16px)",
+                }}
+                className="order-1"
+              >
+                Todo List
+              </p>
+            </div>
+          </div>
+          <div className="mx-3 h-full overflow-y-auto">
+            {data.map((p) => {
+              return (
+                p.name !== "" && (
+                  <TaskItem
+                    data={p}
+                    key={p.key}
+                    handleEdit={() => {
+                      showEditModal(p)
+                    }}
+                    handleRemove={() => {
+                      setData((_) => handleRemove(p))
+                    }}
+                    handleClick={(l) => {
+                      var edit = data
+                      edit[getIndexOfData(data, p)].done =
+                        !edit[getIndexOfData(data, p)].done
+
+                      setData((_) => data)
+
+                      saveData()
+                    }}
+                  />
+                )
+              )
+            })}
+          </div>
+          <button
+            onClick={showModal}
+            className="self-end bg-blue-700 rounded-[4em] py-3 px-4 m-3"
           >
-            Todo List
-          </p>
+            Add Task
+          </button>
         </div>
-        <div className="mx-3 h-full overflow-y-auto">
-          {data.map((p) => {
-            return (
-              <TaskItem
-                data={p}
-                key={p.key}
-                handleEdit={() => {
-                  showEditModal(p)
-                }}
-                handleRemove={() => {
-                  setData((_) => {
-                    const l = data.filter((e) => e !== p)
-                    store.remove(p.key)
-                    return l
-                  })
-                }}
-                handleClick={(l) => {
-                  var edit = data
-                  edit[getIndexOfData(data, p)].done =
-                    !edit[getIndexOfData(data, p)].done
-
-                  setData((_) => data)
-
-                  saveData()
-                }}
-              />
-            )
-          })}
-        </div>
-        <button
-          onClick={showModal}
-          className="self-end bg-blue-700 rounded-[4em] py-3 px-4 m-3"
-        >
-          Add Task
-        </button>
+        {isShownAddModal && AddModalContent()}
+        {isShownEditModal && EditModalContent()}
       </div>
-      {isShownAddModal && AddModalContent()}
-      {isShownEditModal && EditModalContent()}
-    </div>
+    </>
   )
 }

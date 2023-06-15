@@ -7,7 +7,7 @@ interface Props {
 export default function Modal(props: Props) {
   return (
     <div
-      className={`absolute flex w-screen h-screen justify-center items-center bg-opacity-50 bg-slate-300 backdrop-blur-sm backdrop-contrast-100 backdrop-brightness-150 transition-all duration-200`}
+      className={`absolute flex w-screen h-screen justify-center items-center bg-opacity-50 bg-slate-300 transition-all duration-200`}
     >
       <div className="w-[80%] bg-indigo-600 bg-opacity-70 rounded-2xl">
         <div className="m-4">
