@@ -10,21 +10,21 @@ export class AnimatedBackground extends React.Component {
     this.vantaEffect = BIRDS({
       el: this.vantaRef.current,
       mouseControls: true,
-      touchControls: true,
+      touchControls: false,
       gyroControls: false,
       minHeight: 200.0,
       minWidth: 200.0,
       scale: 1.0,
       scaleMobile: 1.0,
-      color1: 0x6fff,
-      color2: 0xff00aa,
-      birdSize: 1.0,
-      wingSpan: 22.0,
-      separation: 100.0,
-      alignment: 57.0,
-      cohesion: 34.0,
-      quantity: 3.0,
-      backgroundAlpha: 0.0,
+      colorMode: "variance",
+      birdSize: 0.7,
+      wingSpan: 40.0,
+      speedLimit: 10.0,
+      separation: 98.0,
+      alignment: 100.0,
+      cohesion: 100.0,
+      quantity: 4.0,
+      backgroundAlpha: 0,
     })
   }
   componentWillUnmount() {
@@ -45,6 +45,7 @@ export class AnimatedBackground extends React.Component {
           zIndex: "999",
           pointerEvents: "none",
           backgroundColor: "transparent",
+          opactiy: "0.5",
         }}
       ></div>
     )
