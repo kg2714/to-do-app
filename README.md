@@ -10,4 +10,4 @@ This project is made for educational purpose (learning to create a webapp using 
 - tailwindcss
 
 ### Links
-[https://to-do-webapp-kg2714.vercel.app] (Deployed by Vercel)
+[Flowing](https://to-do-webapp-kg2714.vercel.app) (Deployed by Vercel)
