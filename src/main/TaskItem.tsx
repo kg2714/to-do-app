@@ -9,6 +9,7 @@ interface Props {
   handleEdit: () => void
   handleRemove: () => void
   handleClick: (l: boolean) => void
+  dark: boolean
 }
 
 export default function TaskItem(props: Props) {
@@ -18,7 +19,7 @@ export default function TaskItem(props: Props) {
 
   return (
     <div
-      className="flex flex-row my-2 mx-3 py-1 hover:bg-slate-400 rounded-3xl transition-colors duration-150 ease-linear group"
+      className="flex flex-row my-2 mx-3 py-1 hover:bg-blue-200 dark:hover:bg-sky-900 rounded-3xl transition-colors duration-150 ease-linear group"
       style={{
         fontSize: "calc(2vh + 3px)",
       }}
@@ -44,6 +45,7 @@ export default function TaskItem(props: Props) {
 
           color: isChecked ? "#0006" : "#000",
           textDecoration: isChecked ? "line-through" : "none",
+          filter: props.dark ? "invert(100%)" : "none",
         }}
         className="transition-all duration-200 flex-grow my-auto"
       >
@@ -63,6 +65,9 @@ export default function TaskItem(props: Props) {
           onMouseLeave={() => {
             setHoverOnEdit((_) => false)
           }}
+          style={{
+            filter: props.dark ? "invert(100%)" : "none",
+          }}
         />
         <img
           src="https://cdn4.iconfinder.com/data/icons/software-menu-icons/256/SoftwareIcons-68-1024.png"
@@ -76,6 +81,9 @@ export default function TaskItem(props: Props) {
           }}
           onMouseLeave={() => {
             setHoverOnEdit((_) => false)
+          }}
+          style={{
+            filter: props.dark ? "invert(100%)" : "none",
           }}
         />
       </div>
