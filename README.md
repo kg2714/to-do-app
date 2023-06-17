@@ -9,4 +9,4 @@ This project is made for educational purpose (learning to create a webapp using 
 - vanta (BIRDS, three.js)
 
 ### Links
-[website (https://to-do-webapp-kg2714.vercel.app)] (Deployed by Vercel)
+[https://to-do-webapp-kg2714.vercel.app] (Deployed by Vercel)
