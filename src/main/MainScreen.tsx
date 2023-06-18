@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react"
 import "./style/fonts.css"
 import TaskItem from "./TaskItem"
 import "./style/scrollbar.css"
-import Modal from "./Modal"
+import Modal from "./utils/Modal"
 import { getIndexOfData } from "./utils/ArrayProcessing"
 import store from "store2"
 import shortid from "shortid"
 import { Data } from "./utils/DataInterface"
-import ThemedDiv from "./ThemeDiv"
+import ThemedDiv from "./utils/ThemeDiv"
 
 var initData: Data[] = []
 

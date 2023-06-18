@@ -55,7 +55,7 @@ export default function TaskItem(props: Props) {
         <img
           src="https://cdn2.iconfinder.com/data/icons/business-shop-finance-symbols-set-3/91/Business_-_Shop_-_Finance_148-1024.png"
           alt="delete"
-          className="w-8 rounded-full hover:bg-red-500 transition-all duration-100"
+          className="w-8 rounded-full hover:bg-red-500 dark:hover:bg-green-300 transition-all duration-100"
           onClick={() => {
             props.handleRemove()
           }}
@@ -72,7 +72,7 @@ export default function TaskItem(props: Props) {
         <img
           src="https://cdn4.iconfinder.com/data/icons/software-menu-icons/256/SoftwareIcons-68-1024.png"
           alt="aaa"
-          className="w-8 rounded-full hover:bg-green-300 p-1 transition-all duration-100"
+          className="w-8 rounded-full hover:bg-green-300 dark:hover:bg-red-500 p-1 transition-all duration-100"
           onClick={(e) => {
             props.handleEdit()
           }}
