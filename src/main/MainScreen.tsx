@@ -6,7 +6,7 @@ import Modal from "./utils/Modal"
 import { getIndexOfData } from "./utils/ArrayProcessing"
 import store from "store2"
 import shortid from "shortid"
-import { Data } from "./utils/DataInterface"
+import { type Data } from "./utils/DataInterface"
 import ThemedDiv from "./utils/ThemeDiv"
 
 var initData: Data[] = []
@@ -231,7 +231,7 @@ export const MainScreen: React.FC = () => {
   })
 
   const [darkEnabled, setDarkEnabled] = useState(
-    store.get("themeMode") === "dark"
+    store.get("themeMode") === "dark",
   )
 
   return (
